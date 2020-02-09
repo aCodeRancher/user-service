@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public UserDto getUser(Long id) {
-        Optional<UserDto> userOptional = users.stream().filter(user -> user.getId() == id).findFirst();
+        Optional<UserDto> userOptional = users.stream().filter(user -> user.getId().equals(id)).findFirst();
         return userOptional.isPresent() ? userOptional.get() : null;
     }
 
@@ -40,7 +40,7 @@ public class UserService {
 
     public UserDto updateUser(UserDto userDto) {
         Optional<UserDto> userOptional = users.stream()
-                .filter(user -> user.getId() == userDto.getId())
+                .filter(user -> user.getId().equals(userDto.getId()))
                 .map(user -> {
                     user.setName(userDto.getName());
                     user.setActive(userDto.isActive());
@@ -52,13 +52,13 @@ public class UserService {
 
     public boolean deleteUser(Long id) {
         final int originalSize = users.size();
-        users = users.stream().filter(user -> user.getId() != id).collect(Collectors.toList());
+        users = users.stream().filter(user -> !user.getId().equals(id)).collect(Collectors.toList());
 
         return originalSize > users.size();
     }
 
     public boolean validateUser(Long id) {
-        Optional<UserDto> userOptional = users.stream().filter(user -> user.getId() == id).findFirst();
+        Optional<UserDto> userOptional = users.stream().filter(user -> user.getId().equals(id)).findFirst();
         return userOptional.isPresent() ? userOptional.get().isActive() : false;
     }
 }
