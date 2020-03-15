@@ -3,6 +3,7 @@ package com.codespacelab.user.controller;
 import com.codespacelab.user.model.UserDto;
 import com.codespacelab.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,9 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+    @Value("${spring.datasource.url}")
+    private String database;
+
     private UserService userService;
 
     public UserController(final UserService userService) {
@@ -21,6 +25,8 @@ public class UserController {
 
     @GetMapping("/all")
     public List<UserDto> getUsers() {
+        log.info("database url: " + database);
+
         return userService.getUsers();
     }
 
