@@ -6,9 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +21,8 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+//restore the List<UserDto> to the original value with 2 users after each test
+//because there is a test for add , put and delete.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserApplicationTests {
 
@@ -75,6 +80,7 @@ class UserApplicationTests {
 		MvcResult result = mockMvc.perform(post("/user")
 				.content(jsonString)
 				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
 				.andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.equals("Argument invalid"));
@@ -96,10 +102,12 @@ class UserApplicationTests {
 	void updateInvalidUserTest() throws Exception {
 		UserDto userToUpdate = new UserDto(123L, null, true);
 		String userJson = objectMapper.writeValueAsString(userToUpdate);
-		MvcResult result =mockMvc.perform(put("/user").content(userJson)
-				.contentType(MediaType.APPLICATION_JSON)).andReturn();
-	    String content =  result.getResponse().getContentAsString();
-	    assertTrue(content.equals("Argument invalid"));
+	    MvcResult result = mockMvc.perform(put("/user").content(userJson)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+		String content = result.getResponse().getContentAsString();
+		assertTrue(content.equals("Argument invalid"));
 	}
 
 	@Test
