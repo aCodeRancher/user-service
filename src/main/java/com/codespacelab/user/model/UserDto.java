@@ -16,6 +16,7 @@ public class UserDto {
     @NotNull
     private Long id;
     @NotNull
+    @Size(min=2)
     private String name;
     @NotNull
     private boolean active;

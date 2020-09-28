@@ -6,11 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/user")
+@Validated
 public class UserController {
 
     private UserService userService;
@@ -54,7 +58,7 @@ public class UserController {
 
     @GetMapping("/validate")
     public boolean validateUser(
-            @RequestParam(name = "id") Long id
+           @Valid @Min(1) @RequestParam(name = "id") Long id
     ) {
         return userService.validateUser(id);
     }
