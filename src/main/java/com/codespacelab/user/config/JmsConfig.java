@@ -3,12 +3,13 @@ package com.codespacelab.user.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
-
 @Configuration
+@Profile("jms")
 public class JmsConfig {
 
     public static final String MENU_QUEUE = "menu-request";
