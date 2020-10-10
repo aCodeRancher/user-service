@@ -1,10 +1,7 @@
 spring:
   application:
     name: user
-  security:
-    user:
-      name: admin
-      password: admin
+
 server:
   port: 8653
 
